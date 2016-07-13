@@ -74,7 +74,14 @@ Main.prototype = {
 		me.createTimer();
 
 		me.game.input.onDown.add(function(){me.guessing = true;}, me);
-		me.game.input.onUp.add(function(){me.guessing = false;}, me);
+		me.random = new Phaser.RandomDataGenerator([seed]);
+
+        me.game.input.onUp.add(function(pointer){
+        	me.guessing = false;
+            var newScore = me.random.integerInRange(1, 30);
+            me.createScoreAnimation(pointer.x, pointer.y, '+'+newScore, newScore);
+
+        }, me);
 
 		me.gameTimer = game.time.events.loop(100, function(){
 			me.updateTimer();
@@ -125,7 +132,6 @@ Main.prototype = {
 					//Set the tile to be active
 					hoverTile.isActive = true;
 
-
 					console.log(hoverTile.tileLetter);
 					
 
@@ -155,7 +161,7 @@ Main.prototype = {
 					if(me.correctWords.indexOf(guessedWord) == -1){
 
 						console.log("correct!");
-
+					
 
 						me.scoreBuffer += 10 * guessedWord.length;
 
@@ -165,10 +171,14 @@ Main.prototype = {
 
 					}
 
-
+					
 				} 
+				
+
+
 				else {
 					console.log("incorrect!");
+
 				}
 
 				//Reset the current word
@@ -257,6 +267,9 @@ Main.prototype = {
 		me.scoreLabel.anchor.setTo(0.5, 0);
 		me.scoreLabel.align = 'center';
 
+		//Create a tween to grow / shrink the score label
+        me.scoreLabelTween = me.add.tween(me.scoreLabel.scale).to({ x: 1.5, y: 1.5}, 200, Phaser.Easing.Linear.In).to({ x: 1, y: 1}, 200, Phaser.Easing.Linear.In);
+
 	},
 
 	incrementScore: function(){
@@ -293,6 +306,28 @@ Main.prototype = {
 		var cropRect = new Phaser.Rectangle(0, 0, (me.remainingTime / me.fullTime) * me.game.width, me.timeBar.height);
 		me.timeBar.crop(cropRect);
 
-	}
+	},
+
+	 createScoreAnimation: function(x, y, message, score){
+
+        var me = this;
+
+        var scoreFont = "90px Arial";
+
+        //Create a new label for the score
+        var scoreAnimation = me.game.add.text(x, y, message, {font: scoreFont, fill: "#39d179", stroke: "#ffffff", strokeThickness: 15}); 
+        scoreAnimation.anchor.setTo(0.5, 0);
+        scoreAnimation.align = 'center';
+
+        //Tween this score label to the total score label
+        var scoreTween = me.game.add.tween(scoreAnimation).to({x:me.game.world.centerX, y: 50}, 800, Phaser.Easing.Exponential.In, true);
+
+        //When the animation finishes, destroy this score label, trigger the total score labels animation and add the score
+        scoreTween.onComplete.add(function(){
+            scoreAnimation.destroy();
+            me.scoreLabelTween.start();
+            me.scoreBuffer += score;
+        }, me);
+    },
 
 };
