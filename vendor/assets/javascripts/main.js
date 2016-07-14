@@ -241,9 +241,22 @@ Main.prototype = {
 
 		var tile = me.game.add.bitmapData(me.tileWidth, me.tileHeight);
 
-		tile.ctx.rect(5, 5, me.tileWidth - 5, me.tileHeight - 5);
-		tile.ctx.fillStyle = color;
+
+
+		// Create Cirlce tiles
+		var centerX = tile.width / 2;
+		var centerY = tile.height / 2;
+		var radius = 70;
+
+		tile.ctx.beginPath();
+		tile.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+		tile.ctx.fillStyle = '#fff';
 		tile.ctx.fill();
+		tile.ctx.lineWidth = 5;
+		tile.ctx.strokeStyle = '#0000';
+		tile.ctx.stroke();
+
+	
 
 		tile.ctx.font = '30px Arial';
 		tile.ctx.textAlign = 'center';
@@ -252,9 +265,16 @@ Main.prototype = {
 		if(color == '#ffffff'){
 			tile.ctx.fillStyle = '#000000';
 		}
+
+	
+
+		
+
 		tile.ctx.fillText(letter, me.tileWidth / 2, me.tileHeight / 2);
 
 		return tile;
+
+
 
 	},
 
