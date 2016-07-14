@@ -1,3 +1,32 @@
-.blue{
-	background-color: #0006ff;
+body.home{
+
+	h1{
+		color: #fff;
+		position: absolute;
+		margin: 40px auto 0 20px;
+		font-size: 1.3em;
+	}
+
+	#output{
+		margin: 80px auto 0 20px;
+		position: absolute;
+		font-size: 1em;
+		color: #fff;
+	}
+
+
+	h2{
+		color: #fff;
+		position: absolute;
+		margin: 110px auto 0 20px;
+		font-size: 1.3em;
+	}
+
+	#outputincorrect{
+		margin: 150px auto 0 20px;
+		position: absolute;
+		float: right;
+		font-size: 1em;
+		color: #fff;
+	}
 }

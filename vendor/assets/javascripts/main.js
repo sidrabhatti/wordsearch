@@ -3,7 +3,6 @@ var Main = function(game){
 };
 
 Main.prototype = {
-
 	create: function() {
 
 		var me = this;
@@ -55,6 +54,8 @@ Main.prototype = {
 			[null, null, null, null, null, null]
 		];
 
+	
+
 		//Keep a reference to the total grid width and height
 		me.boardWidth = me.tileGrid[0].length * me.tileWidth;
 		me.boardHeight = me.tileGrid.length  * me.tileHeight;
@@ -80,14 +81,15 @@ Main.prototype = {
         	me.guessing = false;
             var newScore = me.random.integerInRange(1, 30);
             me.createScoreAnimation(pointer.x, pointer.y, '+'+newScore, newScore);
-
         }, me);
 
 		me.gameTimer = game.time.events.loop(100, function(){
 			me.updateTimer();
 		});
-		
+
 	},
+
+
 
 	update: function() {
 
@@ -133,8 +135,8 @@ Main.prototype = {
 					hoverTile.isActive = true;
 
 					console.log(hoverTile.tileLetter);
-					
 
+				    
 					//Push this tile into the current word that is being built
 					me.currentWord.push(hoverTile);
 				}
@@ -159,9 +161,11 @@ Main.prototype = {
 					
 					//Check to see that the word has not already been guessed
 					if(me.correctWords.indexOf(guessedWord) == -1){
-
-						console.log("correct!");
 					
+						console.log("correct!");
+						var output = document.getElementById("output");
+						output.innerHTML = guessedWord;
+
 
 						me.scoreBuffer += 10 * guessedWord.length;
 
@@ -169,15 +173,16 @@ Main.prototype = {
 						me.correctWords.push(guessedWord);
 						guessedWord
 
-					}
 
-					
+					}		
 				} 
 				
 
 
 				else {
 					console.log("incorrect!");
+					var output = document.getElementById("outputincorrect");
+					output.innerHTML = guessedWord;
 
 				}
 
@@ -185,6 +190,8 @@ Main.prototype = {
 				me.currentWord = [];
 
 			}
+
+
 
 		}
 	},
@@ -241,8 +248,6 @@ Main.prototype = {
 
 		var tile = me.game.add.bitmapData(me.tileWidth, me.tileHeight);
 
-
-
 		// Create Cirlce tiles
 		var centerX = tile.width / 2;
 		var centerY = tile.height / 2;
@@ -266,15 +271,11 @@ Main.prototype = {
 			tile.ctx.fillStyle = '#000000';
 		}
 
-	
-
 		
 
 		tile.ctx.fillText(letter, me.tileWidth / 2, me.tileHeight / 2);
 
 		return tile;
-
-
 
 	},
 
@@ -350,4 +351,5 @@ Main.prototype = {
         }, me);
     },
 
+ 
 };
